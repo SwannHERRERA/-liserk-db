@@ -1,2 +1,2 @@
-# -liserk-db
+# liserk-db
 A database manager
