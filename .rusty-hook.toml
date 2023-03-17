@@ -1,2 +1,2 @@
 [hooks]
-pre-push = "cargo run --bin cargo-make -- make ci-flow"
+pre-push = "cargo run --bin liserk-db -- make ci-flow"
