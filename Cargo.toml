@@ -7,6 +7,7 @@ edition = "2021"
 
 [dependencies]
 thiserror = "1.0.37"
+actix-web = "4"
 
 [dev-dependencies]
 rusty-hook = "0.11.2"
