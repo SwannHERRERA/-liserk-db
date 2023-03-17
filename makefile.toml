@@ -54,6 +54,15 @@ args = [
 	"--ignored",
 ]
 
+[tasks.format]
+install_crate = "rustfmt"
+command = "cargo"
+args = ["fmt", "--", "--emit=files"]
+
+[tasks.clean]
+command = "cargo"
+args = ["clean"]
+
 [tasks.b]
 alias = "build"
 
@@ -68,3 +77,4 @@ alias = "check"
 
 [tasks.t]
 alias = "test"
+
