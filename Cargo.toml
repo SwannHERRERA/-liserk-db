@@ -8,6 +8,7 @@ edition = "2021"
 [dependencies]
 thiserror = "1.0.37"
 actix-web = "4"
+postgresfixture = "0.3"
 
 [dev-dependencies]
 rusty-hook = "0.11.2"
