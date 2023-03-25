@@ -4,4 +4,3 @@ use actix_web::{head, HttpResponse, Responder};
 pub async fn heartbeat(req_body: String) -> impl Responder {
     HttpResponse::Ok().body(req_body)
 }
-
