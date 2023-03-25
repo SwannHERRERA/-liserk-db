@@ -3,7 +3,9 @@ use usecase::create_cluster::create_cluster;
 use usecase::create_instance::create_instance;
 use usecase::heartbeat::heartbeat;
 use std::io;
+
 mod prelude;
+mod infra;
 mod usecase;
 
 #[actix_web::main]
