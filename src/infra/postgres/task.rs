@@ -1,8 +1,6 @@
 use std::process::Command;
 
-use crate::prelude::*;
-
-use super::NetworkPort;
+use crate::{prelude::*, infra::generator::NetworkPort};
 
 pub fn create_cluster(data_path: &str) -> Result<String> {
      let output = Command::new("pg_ctl")
@@ -23,6 +21,7 @@ pub fn start_server(data_path: &str, port: NetworkPort) {
     let output = Command::new("pg_ctl")
         .arg("-D")
         .arg(data_path)
+        .arg(f!("-l {}/log.txt", data_path))
         .arg(f!("-o \"-p {port}\""))
         .arg("start")
         .output();
