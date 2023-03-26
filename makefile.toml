@@ -42,6 +42,26 @@ args = [
   "test",
 ]
 
+[tasks.watch-test]
+command = "cargo"
+args = [
+  "watch",
+  "-c",
+  "-q",
+  "-x",
+  "test",
+]
+
+[tasks.watch]
+command = "cargo"
+args = [
+  "watch",
+  "-c",
+  "-q",
+  "-x",
+  "run",
+]
+
 [tasks.test-all]
 dependencies = ["build-bin"]
 run_task = { name = ["test", "test-ignored"] }
