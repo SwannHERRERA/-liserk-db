@@ -26,3 +26,27 @@ impl Randomize for Generator {
         rng.gen_range(1000..=65535)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::{FolderName, NetworkPort, Randomize};
+
+    pub struct MockGenerator {
+        folder_values: Vec<FolderName>,
+        port_values: Vec<NetworkPort>,
+    }
+    impl MockGenerator {
+        pub fn new(folder_values: Vec<FolderName>, port_values: Vec<NetworkPort>) -> Self {
+            MockGenerator { folder_values, port_values }
+        }
+    }
+    impl Randomize for MockGenerator {
+        fn generate_folder_name(&self) -> FolderName {
+            self.folder_values.first().unwrap().to_string()
+        }
+
+        fn generate_port(&self) -> NetworkPort {
+            self.port_values.first().unwrap().clone()
+        }
+    }
+}
