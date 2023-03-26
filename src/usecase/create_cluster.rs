@@ -1,4 +1,7 @@
-use crate::infra::{postgres::task, generator::{Generator, Randomize}};
+use crate::infra::{
+    generator::{Generator, Randomize},
+    postgres::task,
+};
 use actix_web::{post, HttpResponse, Responder};
 use log::info;
 

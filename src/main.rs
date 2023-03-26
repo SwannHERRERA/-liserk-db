@@ -2,8 +2,8 @@ use actix_web::{App, HttpServer};
 use std::io;
 use std::time::SystemTime;
 use usecase::create_cluster::create_cluster;
-use usecase::start_server::start_server;
 use usecase::heartbeat::heartbeat;
+use usecase::start_server::start_server;
 
 mod infra;
 mod prelude;

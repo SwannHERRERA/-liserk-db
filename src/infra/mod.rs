@@ -1,2 +1,2 @@
-pub mod postgres;
 pub mod generator;
+pub mod postgres;
