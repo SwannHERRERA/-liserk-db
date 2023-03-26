@@ -6,7 +6,7 @@ pub fn create_cluster(data_path: &str) -> Result<String> {
     let output = Command::new("pg_ctl")
         .arg("initdb")
         .arg("-D")
-        .arg(data_path)
+        .arg(f!("data/{}", data_path))
         .arg("-o --encoding=utf8 --locale=C --auth=trust")
         .env("TZ", "UTC")
         .output()?;
@@ -22,7 +22,7 @@ pub fn create_cluster(data_path: &str) -> Result<String> {
 pub fn start_server(data_path: &str, port: NetworkPort) {
     let output = Command::new("pg_ctl")
         .arg("-D")
-        .arg(data_path)
+        .arg(f!("data/{}", data_path))
         .arg(f!("-l {}/log.txt", data_path))
         .arg(f!("-o \"-p {port}\""))
         .arg("start")

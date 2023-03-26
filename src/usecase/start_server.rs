@@ -6,7 +6,7 @@ use crate::infra::{
     postgres::task,
 };
 
-#[post("/start-server")]
+#[post("/start-server/{data_path}")]
 pub async fn start_server(path: web::Path<String>, _req_body: String) -> impl Responder {
     let generator = Generator::default();
     task::start_server(&path.into_inner(), generator.generate_port());

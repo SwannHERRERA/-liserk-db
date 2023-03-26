@@ -15,3 +15,5 @@ Cargo.lock
 /target
 /data
 .env
+output.log
+
