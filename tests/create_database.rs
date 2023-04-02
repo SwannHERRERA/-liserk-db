@@ -1,5 +1,7 @@
-use liserk_db::infra::{generator::{Generator, Randomize}, postgres::task};
-
+use liserk_db::infra::{
+    generator::{Generator, Randomize},
+    postgres::task,
+};
 
 #[test]
 fn test_create_database() {

@@ -36,7 +36,10 @@ mod tests {
         port_values: Vec<NetworkPort>,
     }
     impl MockGenerator {
-        pub fn new(folder_values: Vec<FolderName>, port_values: Vec<NetworkPort>) -> Self {
+        pub fn new(
+            folder_values: Vec<FolderName>,
+            port_values: Vec<NetworkPort>,
+        ) -> Self {
             MockGenerator { folder_values, port_values }
         }
     }
