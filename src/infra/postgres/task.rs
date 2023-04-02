@@ -1,4 +1,4 @@
-use std::process::Command;
+use std::{process::Command, fs::File};
 
 use crate::{infra::generator::NetworkPort, prelude::*};
 
@@ -11,7 +11,11 @@ pub fn create_cluster(data_path: &str) -> Result<String> {
         .env("TZ", "UTC")
         .output()?;
 
+    println!("output: {:?}", output);
+
     if output.stderr.is_empty() {
+        println!("data/{}/log.txt", data_path);
+        let _log_file = File::open(f!("data/{}/log.txt", data_path)).expect("failling to create the log file");
         return Ok(String::from_utf8(output.stdout).expect("Failing to convert to utf8"));
     }
     Err(Error::Generic(
