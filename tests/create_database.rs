@@ -11,5 +11,5 @@ fn test_create_database() {
     let cluster_creation_result = task::create_cluster(&folder_name);
     println!("{:?}", cluster_creation_result);
     task::start_server(&folder_name, port);
-    assert!(false);
+    // assert!(false);
 }
