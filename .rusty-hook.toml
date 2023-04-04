@@ -1,2 +1,2 @@
 [hooks]
-pre-push = "cargo check --bin liserk-db"
+pre-push = "cargo make ci"
