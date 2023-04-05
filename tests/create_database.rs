@@ -1,10 +1,10 @@
 use std::fs::remove_dir_all;
 
-use liserk_db::prelude::*;
 use liserk_db::infra::{
     generator::{Generator, Randomize},
     postgres::task,
 };
+use liserk_db::prelude::*;
 
 #[test]
 fn test_create_database() {
