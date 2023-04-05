@@ -28,7 +28,7 @@ pub fn start_server(data_path: &str, port: NetworkPort) {
     let output = Command::new("pg_ctl")
         .arg("-D")
         .arg(f!("data/{}", data_path))
-        .arg(f!("-l {}/log.txt", data_path))
+        .arg(f!("-l data/{}/log.txt", data_path))
         .arg(f!("-o \"-p {port}\""))
         .arg("start")
         .output();
