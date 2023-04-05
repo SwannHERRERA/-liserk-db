@@ -1,13 +1,15 @@
 use std::{fs::File, process::Command};
 
-use crate::{infra::generator::NetworkPort, prelude::*};
+use crate::{infra::generator::{NetworkPort, FolderName, Username, Password}, prelude::*};
 
-pub fn create_cluster(data_path: &str) -> Result<String> {
+pub fn create_cluster(data_path: &FolderName, username: &Username, _password: &Password) -> Result<String> {
     let output = Command::new("pg_ctl")
         .arg("initdb")
         .arg("-D")
         .arg(f!("data/{}", data_path))
         .arg("-o --encoding=utf8 --locale=C --auth=trust")
+        .arg("--username")
+        .arg(username)
         .env("TZ", "UTC")
         .output()?;
 
