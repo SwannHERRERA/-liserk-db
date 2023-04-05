@@ -34,13 +34,19 @@ impl Randomize for Generator {
     fn generate_username(&self) -> Username {
         const USERNAME_LENGTH: usize = 8;
         let adjectives = [
-            "mighty", "brave", "strong", "fast", "smart", "great",
-            "fierce", "bold", "creative", "happy", "calm",
+            "mighty", "brave", "strong", "fast", "smart", "great", "fierce", "bold",
+            "creative", "happy", "calm",
         ];
         let mut rng = rand::thread_rng();
 
-        let adjective = adjectives.get(rng.gen_range(0..adjectives.len())).unwrap_or(&"mighty");
-        let random_string: String = rng.sample_iter(&Alphanumeric).take(USERNAME_LENGTH).map(char::from).collect();
+        let adjective = adjectives
+            .get(rng.gen_range(0..adjectives.len()))
+            .unwrap_or(&"mighty");
+        let random_string: String = rng
+            .sample_iter(&Alphanumeric)
+            .take(USERNAME_LENGTH)
+            .map(char::from)
+            .collect();
 
         format!("{}-{}", adjective, random_string)
     }
@@ -56,7 +62,8 @@ impl Randomize for Generator {
             exclude_similar_characters: false,
             strict: true,
         };
-        pg.generate_one().expect("configuration is able to generate a passwords")
+        pg.generate_one()
+            .expect("configuration is able to generate a passwords")
     }
 }
 

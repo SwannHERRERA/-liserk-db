@@ -1,8 +1,15 @@
 use std::{fs::File, process::Command};
 
-use crate::{infra::generator::{NetworkPort, FolderName, Username, Password}, prelude::*};
+use crate::{
+    infra::generator::{FolderName, NetworkPort, Password, Username},
+    prelude::*,
+};
 
-pub fn create_cluster(data_path: &FolderName, username: &Username, _password: &Password) -> Result<String> {
+pub fn create_cluster(
+    data_path: &FolderName,
+    username: &Username,
+    _password: &Password,
+) -> Result<String> {
     let output = Command::new("pg_ctl")
         .arg("initdb")
         .arg("-D")
