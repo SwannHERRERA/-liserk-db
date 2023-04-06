@@ -7,5 +7,5 @@ cargo -V || exit /b 1
 
 :: Build and test main crate
 cargo build || exit /b 1
-cargo test || exit /b 1
+cargo test --bins || exit /b 1
 

@@ -39,21 +39,21 @@ pub fn create_cluster(
 }
 
 pub fn start_server(data_path: &str, port: NetworkPort) {
-    let mut command = Command::new("pg_ctl");
-        command.arg("-D")
-        .arg(f!("data/{}", data_path))
-        .arg(f!("-o \"-p {port}\""))
-        .arg(f!("-l data/{}/log.txt", data_path))
-        .arg("start");
+    // let mut command = Command::new("pg_ctl");
+    //     command.arg("-D")
+    //     .arg(f!("data/{}", data_path))
+    //     .arg(f!("-o \"-p {}\"", port))
+    //     .arg(f!("-l data/{}/log.txt", data_path))
+    //     .arg("start");
+    //     
+    // eprintln!("{:?}", command);
         
-    eprintln!("{:?}", command);
-        
-    let _output = Command::new("pg_ctl")
+    let output = Command::new("pg_ctl")
         .arg("-D")
         .arg(f!("data/{}", data_path))
-        .arg(f!("-o \"-p {}\"", port))
+        .arg(f!("-o -p {}", port))
         .arg(f!("-l data/{}/log.txt", data_path))
         .arg("start")
         .output();
-    // println!("{:?}", output);
+    println!("{:?}", output);
 }
