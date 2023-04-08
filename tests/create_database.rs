@@ -15,14 +15,14 @@ fn test_create_database() {
     let folder_name = generator.generate_folder_name();
     let password = generator.generate_password(PASSWORD_LENGTH);
     let username = generator.generate_username();
-    let cluster_creation_result = task::create_cluster(&folder_name, &username, &password);
+    let cluster_creation_result =
+        task::create_cluster(&folder_name, &username, &password);
     println!("{:?}", cluster_creation_result);
     if let Err(err) = remove_dir_all(f!("data/{}", folder_name)) {
         eprintln!("{:?}", err);
         assert!(false);
     }
 }
-
 
 // #[sqlx::test]
 // async fn test_query_database() {

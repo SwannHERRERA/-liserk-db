@@ -1,14 +1,14 @@
 use actix_web::{App, HttpServer};
 use liserk_db::infra::generator::{Generator, Randomize};
 use liserk_db::infra::postgres::task;
+use prelude::f;
 use sqlx::postgres::PgPoolOptions;
 use std::fs::remove_dir_all;
 use std::io;
-use std::time::{SystemTime, Duration};
+use std::time::{Duration, SystemTime};
 use usecase::create_cluster::create_cluster;
 use usecase::heartbeat::heartbeat;
 use usecase::start_server::start_server;
-use prelude::f;
 
 mod infra;
 mod prelude;
@@ -39,7 +39,8 @@ async fn main() {
     let username = generator.generate_username();
     let password = generator.generate_password(12);
     let port = generator.generate_port();
-    let cluster_creation_result = task::create_cluster(&folder_name, &username, &password);
+    let cluster_creation_result =
+        task::create_cluster(&folder_name, &username, &password);
     println!("{:?}", cluster_creation_result);
     task::start_server(&folder_name, port);
 
@@ -48,11 +49,15 @@ async fn main() {
     let pool = PgPoolOptions::new()
         .max_connections(1)
         .idle_timeout(Duration::new(1, 0))
-        .connect(&f!("postgres://{}:{}@localhost:{}/postgres", username, password, port)).await.unwrap();
+        .connect(&f!("postgres://{}:{}@localhost:{}/postgres", username, password, port))
+        .await
+        .unwrap();
 
     let row: (i64,) = sqlx::query_as("SELECT $1")
         .bind(150_i64)
-        .fetch_one(&pool).await.unwrap();
+        .fetch_one(&pool)
+        .await
+        .unwrap();
 
     assert_eq!(row.0, 150);
 

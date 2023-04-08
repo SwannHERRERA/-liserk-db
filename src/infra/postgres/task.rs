@@ -1,4 +1,4 @@
-use std::{fs::File, process::Command, io::Write};
+use std::{fs::File, io::Write, process::Command};
 
 use crate::{
     infra::generator::{FolderName, NetworkPort, Password, Username},
@@ -37,7 +37,8 @@ fn create_password_file(data_path: &str, password: &Password) {
     let mut pwfile = File::options()
         .create(true)
         .write(true)
-        .open(f!("data/{}/pwfile", data_path)).expect("failling to create the password file");
+        .open(f!("data/{}/pwfile", data_path))
+        .expect("failling to create the password file");
 
     pwfile.write(password.as_bytes()).expect("failed to write password");
 }
@@ -49,7 +50,7 @@ pub fn start_server(data_path: &str, port: NetworkPort) {
     //     .arg(f!("-o \"-p {}\"", port))
     //     .arg(f!("-l data/{}/log.txt", data_path))
     //     .arg("start");
-    //     
+    //
     // eprintln!("{:?}", command);
     println!("pg start here");
 
