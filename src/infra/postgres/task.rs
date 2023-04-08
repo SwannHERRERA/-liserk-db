@@ -24,18 +24,22 @@ pub fn create_cluster(
         // println!("data/{}/log.txt", data_path);
         File::create(f!("data/{}/log.txt", data_path))
             .expect("failling to create the log file");
-        let mut pwfile = File::options()
-            .create(true)
-            .write(true)
-            .open(f!("data/{}/pwfile", data_path)).expect("failling to create the password file");
-
-        pwfile.write(password.as_bytes()).expect("failed to write password");
+        create_password_file(data_path, password);
 
         return Ok(String::from_utf8(output.stdout).expect("Failing to convert to utf8"));
     }
     Err(Error::Generic(
         String::from_utf8(output.stderr).expect("Failing to convert error to utf8"),
     ))
+}
+
+fn create_password_file(data_path: &str, password: &Password) {
+    let mut pwfile = File::options()
+        .create(true)
+        .write(true)
+        .open(f!("data/{}/pwfile", data_path)).expect("failling to create the password file");
+
+    pwfile.write(password.as_bytes()).expect("failed to write password");
 }
 
 pub fn start_server(data_path: &str, port: NetworkPort) {
@@ -47,12 +51,13 @@ pub fn start_server(data_path: &str, port: NetworkPort) {
     //     .arg("start");
     //     
     // eprintln!("{:?}", command);
-        
+    println!("pg start here");
+
     let output = Command::new("pg_ctl")
         .arg("-D")
         .arg(f!("data/{}", data_path))
         .arg(f!("-o -p {}", port))
-        .arg(f!("-l data/{}/log.txt", data_path))
+        // .arg(f!("-l data/{}/log.txt", data_path))
         .arg("start")
         .output();
     println!("{:?}", output);
