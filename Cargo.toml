@@ -15,9 +15,17 @@ fern = "0.6.2"
 humantime = "2.1.0"
 sqlx = { version = "0.6.3", features = ["postgres", "runtime-actix-native-tls"] }
 passwords = { version = "3.1.12", features = ["crypto", "common-password", "bcrypt", "rand"] }
+nix = "0.26.2"
+postgres = "0.19.5"
+either = "1.8.1"
+postgres-protocol = "0.6.5"
+color-eyre = "0.6.2"
+shell-quote = "0.3.0"
+regex = "1.7.3"
 
 [dev-dependencies]
 rusty-hook = "0.11.2"
 anyhow="1"
 predicate = "0.1.0"
 assert_cmd = "2.0.10"
+tempdir = "0.3.7"

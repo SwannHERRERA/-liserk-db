@@ -47,7 +47,8 @@ fn create_password_file(data_path: &str, password: &Password) {
         .open(f!("data/{}/pwfile", data_path))
         .expect("failling to create the password file");
 
-    let _byte_writen = pwfile.write(password.as_bytes()).expect("failed to write password");
+    let _byte_writen =
+        pwfile.write(password.as_bytes()).expect("failed to write password");
 }
 
 pub fn start_server(data_path: &str, port: NetworkPort) {
