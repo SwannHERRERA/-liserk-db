@@ -13,7 +13,5 @@ Cargo.lock
 # Added by cargo
 
 /target
-/data
 .env
-output.log
 
