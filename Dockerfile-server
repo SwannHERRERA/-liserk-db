@@ -1,0 +1,15 @@
+FROM rust:1.69 as build
+
+WORKDIR /liserk-server
+
+COPY . .
+
+RUN cargo build --bin liserk-server --release
+
+# ----
+
+FROM rust:1.69
+
+COPY --from=build /liserk-server/target/release/liserk-server .
+
+CMD ["./liserk-server"]

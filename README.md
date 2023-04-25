@@ -11,3 +11,12 @@ A database manager
 - create database
 - create backup
 - update configuration
+
+## App
+
+- Redis
+- Postgres
+- Pgadmin
+- server
+- client (scailable)
+

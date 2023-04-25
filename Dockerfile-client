@@ -1,0 +1,15 @@
+FROM rust:1.69 as build
+
+WORKDIR /liserk-client
+
+COPY . .
+
+RUN cargo build --bin liserk-client --release
+
+# ----
+
+FROM rust:1.69
+
+COPY --from=build /liserk-client/target/release/liserk-client .
+
+CMD ["./liserk-client"]

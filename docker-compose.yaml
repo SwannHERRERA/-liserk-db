@@ -1,0 +1,61 @@
+version: '3'
+
+services:
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3.11
+    environment:
+      RABBITMQ_DEFAULT_USER: rmq
+      RABBITMQ_DEFAULT_PASS: pass
+    restart: on-failure
+    ports:
+     - 4369:4369
+     - 5671:5671
+     - 5672:5672
+     - 25672:25672
+     - 15671:15671
+     - 15672:15672
+
+  postgres:
+    container_name: postgres
+    image: postgres:15
+    environment:
+      POSTGRES_PASSWORD: dbpass
+      POSTGRES_USER: dbuser
+      POSTGRES_DB: dbname
+    restart: on-failure
+    ports:
+      - 5432:5432
+
+  pgadmin:
+    image: dpage/pgadmin4
+    healthcheck:
+      test: |
+          apk add --no-cache sqlite
+          sqlite3 /var/lib/pgadmin/pgadmin4.db 'INSERT OR IGNORE INTO server (id, user_id, servergroup_id, name, host, port, maintenance_db, username, password, ssl_mode, use_ssh_tunnel, tunnel_port, tunnel_authentication, connect_timeout) VALUES (10, 1, 1, "chatbot_prog_1", "postgres", 5432, "dbname", "dbuser", NULL, "prefer", 0, 22, 0, 0);' '.exit'
+          exit 1
+      interval: 0s
+      timeout: 10s
+      retries: 1
+    depends_on:
+      - postgres
+    ports:
+      - 5050:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin
+      PGADMIN_DEFAULT_PASSWORD: admin
+    restart: unless-stopped
+
+  redis:
+    container_name: redis
+    image: redis:3-alpine
+    ports:
+        - 6379:6379
+
+  server:
+    build:
+      context: ./server/
+
+  client:
+    build:
+      context: ./client/
