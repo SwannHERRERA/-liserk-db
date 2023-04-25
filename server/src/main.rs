@@ -9,22 +9,13 @@ async fn main() -> Result<()> {
     let app = app.route("/", get(create_database));
     let db_url = f!(
         "postgres://{user}:{password}@{host}/{db_name}",
-        user = "dbuser",
-        password = "dbpass",
-        host = "localhost",
+        user = "root",
+        password = "root",
+        host = "localhost:5432",
         db_name = "liserk"
     );
-    let pool = PgPoolOptions::new()
-        .max_connections(5)
-        .connect(&db_url)
-        .await
-        .unwrap();
-    let row: (i64,) = sqlx::query_as("SELECT $1")
-        .bind(150_i64)
-        .fetch_one(&pool)
-        .await
-        .unwrap();
-    println!("{:?}", row);
+    let pool = PgPoolOptions::new().max_connections(5).connect(&db_url).await;
+    let pool = pool.unwrap();
 
     Server::bind(&"0.0.0.0:3000".parse().unwrap())
         .serve(app.into_make_service())
