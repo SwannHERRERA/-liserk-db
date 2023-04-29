@@ -8,8 +8,8 @@ CREATE TABLE USERS (
 CREATE TYPE PROCESS_STATUS AS ENUM ('active', 'cancel', 'crash', 'delete');
 
 CREATE TABLE PROCESS (
-  id UUID PRIMARY KEY,
-  status process_status NOT NULL DEFAULT 'active',
+  id_process UUID PRIMARY KEY,
+  status VARCHAR(255) NOT NULL DEFAULT 'active',
   activation_date TIMESTAMP,
   creation_date TIMESTAMP
 );

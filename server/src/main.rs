@@ -10,7 +10,8 @@ use shared::{
     generator::{DefaultGenerator, Generator},
     prelude::*,
 };
-use sqlx::{postgres::PgPoolOptions, PgPool};
+use sqlx::{query, PgPool};
+use time::OffsetDateTime;
 
 type DynGenerator = Arc<dyn Generator + Send + Sync>;
 
@@ -19,13 +20,13 @@ async fn main() -> Result<()> {
     let app = Router::new();
     let db_url = f!(
         "postgres://{user}:{password}@{host}/{db_name}",
-        user = "root",
+        user = "postgres",
         password = "root",
         host = "localhost:5432",
         db_name = "liserk"
     );
-    let pool = PgPoolOptions::new().max_connections(5).connect(&db_url).await;
-    let pool = pool.unwrap();
+    let pool = PgPool::connect(&db_url).await;
+    let pool = pool.expect("failed to connect with database");
 
     let generator = Arc::new(DefaultGenerator::default()) as DynGenerator;
     let app = app
@@ -40,10 +41,9 @@ async fn main() -> Result<()> {
 
 async fn create_database(
     Path(db_name): Path<String>,
-    State((generator, _pool)): State<(DynGenerator, PgPool)>,
+    State((generator, pool)): State<(DynGenerator, PgPool)>,
 ) -> Json<Value> {
     let metadatas = generate_metadata_for_database(&generator, &db_name);
-    // save metadata
 
     // Warnning: care port use, name used, folder used is case of error for now
     println!("{:?}", metadatas);
@@ -52,8 +52,28 @@ async fn create_database(
         .args(metadatas)
         .output()
         .expect("command should run sucessfuly");
+    // save metadata
     println!("{:?}", output);
-    json!({"a":"b"}).into()
+    let id = output.stdout.to_ascii_lowercase();
+    let now = OffsetDateTime::now_utc();
+    let inserted_id = query!(
+        "INSERT INTO PROCESS
+        (id_process, status, activation_date, creation_date) 
+        VALUES ($1, $2, $3, $4)
+        RETURNING id_process",
+        uuid!(id),
+        "active",
+        now,
+        now
+    )
+    .fetch_one(&pool)
+    .await;
+    // .bind(output.stdout.to_ascii_lowercase())
+    // .bind("active")
+    // .();
+    // stdout trim.... and there is the uuid
+    // add default info to response like time ...
+    json!({ "inserted_id": inserted_id }).into()
 }
 
 fn generate_metadata_for_database(

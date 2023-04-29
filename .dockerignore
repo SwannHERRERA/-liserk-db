@@ -1,0 +1,7 @@
+ci/
+.git/
+.github/
+target/
+.editorconfig
+todo.md
+
