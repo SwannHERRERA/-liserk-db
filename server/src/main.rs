@@ -11,20 +11,17 @@ use shared::{
     prelude::*,
 };
 use sqlx::{query, PgPool};
-use time::OffsetDateTime;
+use time::{OffsetDateTime, PrimitiveDateTime};
+use uuid::Uuid;
 
 type DynGenerator = Arc<dyn Generator + Send + Sync>;
 
 #[tokio::main]
 async fn main() -> Result<()> {
     let app = Router::new();
-    let db_url = f!(
-        "postgres://{user}:{password}@{host}/{db_name}",
-        user = "postgres",
-        password = "root",
-        host = "localhost:5432",
-        db_name = "liserk"
-    );
+    dotenv::dotenv().expect("Unable to load environment variables from .env file");
+    let db_url =
+        std::env::var("DATABASE_URL").expect("Unable to read DATABASE_URL env var");
     let pool = PgPool::connect(&db_url).await;
     let pool = pool.expect("failed to connect with database");
 
@@ -54,17 +51,20 @@ async fn create_database(
         .expect("command should run sucessfuly");
     // save metadata
     println!("{:?}", output);
-    let id = output.stdout.to_ascii_lowercase();
+    let lowercase_docker_id = output.stdout.to_ascii_lowercase();
+    let docker_id = String::from_utf8_lossy(&lowercase_docker_id);
+    let id = Uuid::new_v4();
     let now = OffsetDateTime::now_utc();
     let inserted_id = query!(
         "INSERT INTO PROCESS
-        (id_process, status, activation_date, creation_date) 
-        VALUES ($1, $2, $3, $4)
+        (id_process, status, activation_date, creation_date, docker_id) 
+        VALUES ($1, $2, $3, $4, $5)
         RETURNING id_process",
-        uuid!(id),
+        id,
         "active",
         now,
-        now
+        now,
+        &docker_id
     )
     .fetch_one(&pool)
     .await;
@@ -73,6 +73,7 @@ async fn create_database(
     // .();
     // stdout trim.... and there is the uuid
     // add default info to response like time ...
+    let inserted_id = inserted_id.unwrap().id_process.to_string();
     json!({ "inserted_id": inserted_id }).into()
 }
 
