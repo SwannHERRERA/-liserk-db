@@ -3,7 +3,7 @@ use bson::doc;
 use serde::{Deserialize, Serialize};
 use tracing::debug;
 
-use crate::errors::Error;
+use crate::core::Error;
 
 pub fn create_route() -> Router {
     Router::new().route("/status", get(get_status))

@@ -1,6 +1,6 @@
 use std::env;
 
-use crate::settings::SETTINGS;
+use crate::core::SETTINGS;
 
 pub fn setup() {
     if env::var_os("RUST_LOG").is_none() {

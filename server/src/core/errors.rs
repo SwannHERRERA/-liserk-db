@@ -1,6 +1,7 @@
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
 use axum::Json;
+use bcrypt::BcryptError;
 use serde_json::json;
 use tokio::task::JoinError;
 
@@ -8,7 +9,10 @@ use tokio::task::JoinError;
 #[error("...")]
 pub enum Error {
     #[error("Error parsing ObjectID {0}")]
-    ParseObjectID(String),
+    ParseUuid(String),
+
+    #[error("{0}")]
+    SerializeMongoResponse(#[from] bson::de::Error),
 
     #[error("{0}")]
     Authenticate(#[from] AuthenticateError),
@@ -21,13 +25,19 @@ pub enum Error {
 
     #[error("{0}")]
     RunSyncTask(#[from] JoinError),
+
+    #[error("{0}")]
+    HashPassword(#[from] BcryptError),
+
+    #[error("{0}")]
+    RepoError(#[from] RepoError),
 }
 
 impl Error {
     fn get_codes(&self) -> (StatusCode, u16) {
         match *self {
             // 4XX Errors
-            Error::ParseObjectID(_) => (StatusCode::BAD_REQUEST, 40001),
+            Error::ParseUuid(_) => (StatusCode::BAD_REQUEST, 40001),
             Error::BadRequest(_) => (StatusCode::BAD_REQUEST, 40002),
             Error::NotFound(_) => (StatusCode::NOT_FOUND, 40003),
             Error::Authenticate(AuthenticateError::WrongCredentials) => {
@@ -42,7 +52,10 @@ impl Error {
             Error::Authenticate(AuthenticateError::TokenCreation) => {
                 (StatusCode::INTERNAL_SERVER_ERROR, 5001)
             }
+            Error::SerializeMongoResponse(_) => (StatusCode::INTERNAL_SERVER_ERROR, 5004),
             Error::RunSyncTask(_) => (StatusCode::INTERNAL_SERVER_ERROR, 5005),
+            Error::HashPassword(_) => (StatusCode::INTERNAL_SERVER_ERROR, 5006),
+            Error::RepoError(_) => (StatusCode::INTERNAL_SERVER_ERROR, 5006),
         }
     }
 
@@ -85,3 +98,7 @@ pub struct BadRequest {}
 #[derive(thiserror::Error, Debug)]
 #[error("Not found")]
 pub struct NotFound {}
+
+#[derive(thiserror::Error, Debug)]
+#[error("Repository error")]
+pub struct RepoError {}

@@ -4,5 +4,6 @@ pub mod date;
 pub mod models;
 pub mod pagination;
 pub mod request_query;
-pub mod to_object_id;
+pub mod sea_orm_model;
+pub mod to_uuid;
 pub mod token;
