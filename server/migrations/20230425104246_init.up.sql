@@ -13,7 +13,7 @@ CREATE TABLE PROCESS (
   status          VARCHAR(255) NOT NULL DEFAULT 'active',
   activation_date TIMESTAMPTZ,
   creation_date   TIMESTAMPTZ,
-  docker_id       VARCHAR(60)
+  docker_id       VARCHAR(64)
 );
 
 CREATE INDEX ON PROCESS(docker_id);
