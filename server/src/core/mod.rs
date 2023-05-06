@@ -1,11 +1,10 @@
 use serde::{Deserialize, Serialize};
 
 mod errors;
-mod logger;
+pub mod logger;
 mod settings;
 
 pub use errors::*;
-pub use logger::*;
 pub use settings::*;
 
 pub type RepoResult<T> = Result<T, Error>;
