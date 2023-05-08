@@ -12,9 +12,6 @@ pub enum Error {
     ParseUuid(String),
 
     #[error("{0}")]
-    SerializeMongoResponse(#[from] bson::de::Error),
-
-    #[error("{0}")]
     Authenticate(#[from] AuthenticateError),
 
     #[error("{0}")]
@@ -52,7 +49,6 @@ impl Error {
             Error::Authenticate(AuthenticateError::TokenCreation) => {
                 (StatusCode::INTERNAL_SERVER_ERROR, 5001)
             }
-            Error::SerializeMongoResponse(_) => (StatusCode::INTERNAL_SERVER_ERROR, 5004),
             Error::RunSyncTask(_) => (StatusCode::INTERNAL_SERVER_ERROR, 5005),
             Error::HashPassword(_) => (StatusCode::INTERNAL_SERVER_ERROR, 5006),
             Error::RepoError(_) => (StatusCode::INTERNAL_SERVER_ERROR, 5006),

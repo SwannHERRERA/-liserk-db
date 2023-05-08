@@ -5,9 +5,9 @@ use std::net::SocketAddr;
 use tokio::runtime::Runtime;
 
 use crate::app::create_app;
+use crate::core::SETTINGS;
 use crate::models::cat::Cat;
 use crate::models::user::User;
-use crate::settings::SETTINGS;
 use crate::utils::models::ModelExt;
 
 lazy_static! {

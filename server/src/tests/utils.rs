@@ -1,7 +1,7 @@
-use crate::errors::Error;
+use crate::core::Error;
+use crate::core::SETTINGS;
 use crate::models::user::hash_password;
 use crate::models::user::User;
-use crate::settings::SETTINGS;
 use crate::utils::models::ModelExt;
 use crate::utils::token;
 

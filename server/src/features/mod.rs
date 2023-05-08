@@ -1,1 +1,1 @@
-pub mod cats;
+pub mod users;

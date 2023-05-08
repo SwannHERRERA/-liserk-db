@@ -1,11 +1,11 @@
 use serde::{Deserialize, Serialize};
 use tokio::task;
+use uuid::Uuid;
 use validator::Validate;
 
 use crate::core::Error;
 use crate::utils::date;
 use crate::utils::date::Date;
-use sea_orm::prelude::Uuid;
 
 #[derive(Debug, Clone, Serialize, Deserialize, Validate)]
 pub struct User {

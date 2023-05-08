@@ -10,6 +10,7 @@ use crate::tests::utils::create_user_token;
 use crate::utils::models::ModelExt;
 
 #[test]
+#[ignore = "cat does not exist"]
 fn post_cat_route() {
     #[derive(Debug, Serialize, Deserialize)]
     struct Body {
@@ -45,6 +46,7 @@ fn post_cat_route() {
 }
 
 #[test]
+#[ignore = "cat does not exist"]
 fn get_cats_route() {
     use_app(async move {
         let user = create_user("nico@test.com").await.unwrap();
